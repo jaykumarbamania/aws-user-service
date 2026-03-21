@@ -56,7 +56,8 @@ jobs:
             .requiresAttributes,
             .compatibilities,
             .registeredAt,
-            .registeredBy
+            .registeredBy,
+            .enableFaultInjection
           )' > clean-task-def.json
 
       - name: Update container image
