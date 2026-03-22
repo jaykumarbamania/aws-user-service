@@ -2,6 +2,7 @@ package com.aws.project.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
@@ -26,5 +27,19 @@ public class S3Service {
                 .build();
 
         s3Client.putObject(request, Paths.get(filePath));
+    }
+
+    public void uploadFile(MultipartFile file) {
+        try {
+            s3Client.putObject(
+                    PutObjectRequest.builder()
+                            .bucket(bucketName)
+                            .key(file.getOriginalFilename())
+                            .build(),
+                    RequestBody.fromBytes(file.getBytes())
+            );
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload file", e);
+        }
     }
 }
